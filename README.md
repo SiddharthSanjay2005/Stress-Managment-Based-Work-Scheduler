@@ -1,4 +1,4 @@
-# 🧠 AI Timetable Generator:-
+# 🧠 Stress Management Based Work Scheduler:-
 
 > An intelligent timetable generation system using Genetic Algorithm optimized for educational institutions.
 
