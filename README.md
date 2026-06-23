@@ -87,6 +87,7 @@ AI-Timetable-Generator/
 │
 ├── backend/ # Node.js Backend
 │ ├── models/ # MongoDB Models
+<br>
 │ │ ├── Faculty.js # Faculty schema
 │ │ ├── Timetable.js # Timetable schema
 │ │ └── Department.js # Department schema
