@@ -1,0 +1,40 @@
+{
+  "name": "timetable-generator-backend",
+  "version": "2.0.0",
+  "description": "AI Timetable Generator using Genetic Algorithm for MVGR College",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "start-mongo": "mongod --dbpath ./data/db --fork --logpath ./data/mongodb.log",
+    "stop-mongo": "mongod --dbpath ./data/db --shutdown",
+    "test-mongo": "node scripts/test-mongo.js",
+    "init-data": "node scripts/load-real-college-data.js",
+    "init-simple": "node scripts/simple-init.js",
+    "debug-init": "node scripts/debug-init.js",
+    "reset-db": "node scripts/reset-database.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "timetable",
+    "genetic-algorithm",
+    "scheduler",
+    "college",
+    "mvgr"
+  ],
+  "author": "MVGR College of Engineering",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

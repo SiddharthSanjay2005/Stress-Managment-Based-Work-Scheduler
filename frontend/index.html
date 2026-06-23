@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Timetable Generator | MVGR College</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                <span>MVGR Timetable Generator</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#generate"><i class="fas fa-robot"></i> Generate</a></li>
+                <li><a href="#view"><i class="fas fa-eye"></i> View</a></li>
+                <li><a href="#manage"><i class="fas fa-cog"></i> Setup</a></li>
+                <!-- REMOVED Stress Bot button from here -->
+                <li><a href="https://app.powerbi.com/reportEmbed?reportId=41695dd7-7440-4011-9cbe-46431302f2d4&autoAuth=true&ctid=d783a3ac-1d29-4e31-8dba-5902c41a5774" target="_blank" class="analytics-nav-link"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1><span class="highlight">AI-Powered</span> Timetable Generator</h1>
+            <p>Department of Information Technology | MVGR College of Engineering</p>
+            <p class="hero-subtitle">Using Genetic Algorithm to create optimal timetables</p>
+           
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Initialize Data</h4>
+                        <p>Load real college data first</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Select Department</h4>
+                        <p>Choose IT, CSIT, CSE, or ECE</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Generate with AI</h4>
+                        <p>AI creates optimal timetable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Generator Section -->
+    <section class="generator-section" id="generate">
+        <h2>Generate Timetable</h2>
+        <div class="generator-card">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="department"><i class="fas fa-building"></i> Department</label>
+                    <select id="department">
+                        <option value="">Select Department</option>
+                        <option value="IT">Information Technology (IT)</option>
+                        <option value="CSIT">Computer Science & IT (CSIT)</option>
+                        <option value="CSE">Computer Science & Engineering (CSE)</option>
+                        <option value="ECE">Electronics & Communication Engineering (ECE)</option>
+                        <option value="EEE">Electrical & Electronics Engineering (EEE)</option>
+                        <option value="Civil">Civil Engineering</option>
+                        <option value="Mechanical">Mechanical Engineering</option>
+                        <option value="Chemical">Chemical Engineering</option>
+                        <option value="Data Engineering">Data Engineering</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="semester"><i class="fas fa-graduation-cap"></i> Semester</label>
+                    <select id="semester">
+                        <option value="">Select Semester</option>
+                        <option value="2">Semester 2</option>
+                        <option value="4">Semester 4</option>
+                        <option value="6">Semester 6</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-cogs"></i> Options</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="includeSaturday"> Include Saturday</label>
+                    <label><input type="checkbox" checked id="includeSports"> Include Sports</label>
+                    <label><input type="checkbox" checked id="includeLibrary"> Include Library</label>
+                    <label><input type="checkbox" checked id="includeCounselling"> Include Counselling</label>
+                </div>
+            </div>
+
+            <div class="button-group">
+                
+                <button id="generateAIBtn" class="generate-button ai-btn" type="button">
+                    <i class="fas fa-robot"></i> Generate with GA
+                </button>
+            </div>
+
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <p><strong>⚠️ IMPORTANT:</strong> Click "Initialize College Data" button first!</p>
+                    <p><strong>Generate with AI:</strong> Uses Genetic Algorithm with real faculty data (10-20 seconds)</p>
+                    <p><strong>Constraint:</strong> Sports periods will not be adjacent to Library/Counselling periods</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Message -->
+    <div id="statusMessage" class="status-message hidden">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span id="statusText">Processing...</span>
+    </div>
+
+    <!-- Timetable Display -->
+    <section class="timetable-section" id="view">
+        <div class="section-header">
+            <h2>Generated Timetable</h2>
+            <div class="controls">
+                <button id="printBtn" type="button"><i class="fas fa-print"></i> Print</button>
+                <button id="exportBtn" type="button"><i class="fas fa-download"></i> Export</button>
+                <button id="refreshBtn" type="button"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+        </div>
+
+        <div id="timetableStats" class="timetable-stats" style="display: none;">
+            <!-- Stats will appear here -->
+        </div>
+
+        <div id="timetableContainer" class="timetable-container">
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-calendar-plus"></i>
+                <h3>No Timetable Generated Yet</h3>
+                <p>Select a department and semester to generate your timetable</p>
+                <p class="hint">💡 <strong>First:</strong> Click "Initialize College Data" button below</p>
+                <p class="hint">📊 <strong>Then:</strong> Choose "Quick Generate" or "Generate with AI"</p>
+            </div>
+
+            <!-- Dynamic timetable will be injected here -->
+            <div id="timetableContent" style="display: none;"></div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">×</span>
+                <h2>Edit Period</h2>
+                <form id="editForm">
+                    <input type="hidden" id="editDay">
+                    <input type="hidden" id="editIndex">
+
+                    <label for="editTime">Time (e.g. 9:00-10:00):</label>
+                    <input type="text" id="editTime" required placeholder="9:00-10:00">
+
+                    <label for="editSubject">Subject:</label>
+                    <input type="text" id="editSubject" required>
+
+                    <label for="editFaculty">Faculty:</label>
+                    <input type="text" id="editFaculty" required>
+
+                    <label for="editRoom">Room:</label>
+                    <input type="text" id="editRoom" required>
+
+                    <div class="modal-buttons">
+                        <button type="button" onclick="closeModal()">Cancel</button>
+                        <button type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Management Section -->
+    <section class="management-section" id="manage">
+        <h2>System Setup</h2>
+        <div class="management-cards">
+            <div class="management-card important">
+                <i class="fas fa-database"></i>
+                <h3>Initialize College Data</h3>
+                <p>Load REAL departments and faculty from Department.docx</p>
+                <button id="initDataBtn" class="manage-btn" type="button">
+                    <i class="fas fa-play-circle"></i> Initialize Data
+                </button>
+                <p class="card-note">Required before generating timetables</p>
+            </div>
+           
+            <div class="management-card">
+                <i class="fas fa-list"></i>
+                <h3>All Timetables</h3>
+                <p>Browse all generated timetables</p>
+                <button id="viewAllBtn" class="manage-btn" type="button">
+                    <i class="fas fa-list-alt"></i> Browse All
+                </button>
+            </div>
+
+            <!-- REMOVED Stress Bot management card from here -->
+        </div>
+       
+        <div class="system-info">
+            <h3>System Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-university"></i>
+                    <span>MVGR College of Engineering</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-users"></i>
+                    <span>9 Departments Loaded</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Even Semesters Only</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-brain"></i>
+                    <span>Genetic Algorithm</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Department of Information Technology</h4>
+                <p>MVGR College of Engineering</p>
+                <p>Batch: C02 | Project Guide: Mrs. D. Gayatri</p>
+            </div>
+           
+            <div class="footer-section">
+                <h4>Project Team</h4>
+                <p>Nagendra Kumar D</p>
+                <p>Keerthi | Reshma | Siddharth</p>
+            </div>
+           
+            <div class="footer-section">
+                <h4>Technology Stack</h4>
+                <p>Node.js | MongoDB | Genetic Algorithm</p>
+                <p>HTML | CSS | JavaScript</p>
+            </div>
+        </div>
+        
+        <!-- Heart-shaped Stress Bot Button at Bottom -->
+        <div style="text-align: center; margin: 20px 0;">
+            <button onclick="openStressModal()" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; font-size: 28px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); transition: all 0.3s; animation: heartbeat 1.5s infinite;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <i class="fas fa-heart"></i>
+            </button>
+            <p style="color: #7f8c8d; margin-top: 5px; font-size: 12px;">Stress Bot</p>
+        </div>
+        
+        <p class="copyright">© 2024 AI Timetable Generator - MVGR College | All rights reserved</p>
+    </footer>
+
+    <!-- ==================== STRESS MANAGEMENT BOT MODAL ==================== -->
+    <div id="stressBotModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 550px; max-height: 80vh; overflow-y: auto;">
+            <span class="close-btn" onclick="closeStressModal()">×</span>
+            <h2 style="color: #e74c3c; text-align: center; margin-bottom: 20px;">
+                <i class="fas fa-heart"></i> Stress Management Bot
+            </h2>
+            
+            <div id="stressBotContainer">
+                <!-- Initial Welcome Message -->
+                <div class="bot-message" style="background: #f0f8ff; padding: 20px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid #3498db;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="background: #3498db; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-robot" style="color: white; font-size: 24px;"></i>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-weight: 600; color: #2c3e50;">Wellness Bot</p>
+                            <p style="margin: 5px 0 0 0; color: #34495e;">Hello! I'm here to help you manage stress. How are you feeling today?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stress Level Selection -->
+                <div id="stressLevelSelection" style="text-align: center; margin: 25px 0;">
+                    <p style="margin-bottom: 20px; font-size: 18px; font-weight: 600; color: #2c3e50;">Select your current stress level:</p>
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="selectStressLevel('low')" class="stress-btn" style="background: linear-gradient(135deg, #27ae60, #229954); color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 16px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);">
+                            <i class="fas fa-smile"></i> Low Stress
+                        </button>
+                        <button onclick="selectStressLevel('medium')" class="stress-btn" style="background: linear-gradient(135deg, #f39c12, #e67e22); color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 16px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);">
+                            <i class="fas fa-meh"></i> Medium Stress
+                        </button>
+                        <button onclick="selectStressLevel('high')" class="stress-btn" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 16px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);">
+                            <i class="fas fa-frown"></i> High Stress
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recommendations Container (Initially Hidden) -->
+                <div id="recommendationsContainer" style="display: none;">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REMOVED Floating Stress Bot Button from here -->
+
+    <!-- Stress Bot CSS Styles -->
+    <style>
+        .stress-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
+        }
+        
+        .recommendation-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            animation: slideIn 0.3s ease;
+            border-left: 5px solid #3498db;
+        }
+        
+        .recommendation-card.low { border-left-color: #27ae60; }
+        .recommendation-card.medium { border-left-color: #f39c12; }
+        .recommendation-card.high { border-left-color: #e74c3c; }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .breathing-exercise {
+            background: linear-gradient(135deg, #e8f4f8, #d4e9f2);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .breathing-circle {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: breathe 8s infinite ease-in-out;
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4);
+        }
+        
+        @keyframes breathe {
+            0%, 100% { 
+                transform: scale(1); 
+                background: linear-gradient(135deg, #3498db, #2980b9);
+            }
+            25% { 
+                transform: scale(1.2); 
+                background: linear-gradient(135deg, #2ecc71, #27ae60);
+            }
+            50% { 
+                transform: scale(1); 
+                background: linear-gradient(135deg, #3498db, #2980b9);
+            }
+            75% { 
+                transform: scale(0.9); 
+                background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            }
+        }
+        
+        .box-breathing-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .box-phase {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+            animation: pulse 4s infinite;
+        }
+        
+        .box-phase:nth-child(1) { background: #3498db; animation-delay: 0s; }
+        .box-phase:nth-child(2) { background: #f39c12; animation-delay: 1s; }
+        .box-phase:nth-child(3) { background: #27ae60; animation-delay: 2s; }
+        .box-phase:nth-child(4) { background: #9b59b6; animation-delay: 3s; }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .quote-box {
+            font-style: italic;
+            color: #555;
+            padding: 20px;
+            background: #f9f0f9;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #9b59b6;
+            position: relative;
+        }
+        
+        .quote-box i {
+            color: #9b59b6;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        
+        .resource-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .resource-link:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .bot-response {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        .bot-avatar {
+            background: #3498db;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .bot-avatar i {
+            color: white;
+            font-size: 24px;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #7f8c8d, #6c7a7d);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            35% { transform: scale(1); }
+            45% { transform: scale(1.05); }
+            55% { transform: scale(1); }
+        }
+    </style>
+
+    <script src="script.js"></script>
+</body>
+</html>

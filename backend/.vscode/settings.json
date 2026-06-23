@@ -1,0 +1,9 @@
+{
+  "liveServer.settings.port": 8000,
+  "liveServer.settings.root": "/frontend",
+  "liveServer.settings.file": "index.html",
+  "liveServer.settings.wait": 500,
+  "liveServer.settings.host": "127.0.0.1",
+  "liveServer.settings.NoBrowser": false,
+  "liveServer.settings.open": "index.html"
+}
