@@ -91,35 +91,58 @@ AI-Timetable-Generator/
 │ ├── models/ # MongoDB Models
 <br>
 │ │ ├── Faculty.js # Faculty schema
+<br>
 │ │ ├── Timetable.js # Timetable schema
+<br>
 │ │ └── Department.js # Department schema
+<br>
 │ │
 │ ├── routes/ # API Routes
+<br>
 │ │ └── timetable.js # Timetable endpoints
+<br>
 │ │
 │ ├── genetic-algorithm/ # AI Algorithm Core
+<br>
 │ │ └── scheduler.js # Main GA scheduler
+<br>
 │ │ 
 │ ├── scripts/ # Utility Scripts
+<br>
 │ │ ├── load-real-college-data.js # Import college data
+<br>
 │ │ ├── simple-init.js # Test DB connection
+<br>
 │ │ ├── start-mongodb.sh # Start MongoDB
+<br>
 │ │ └── stop-mongodb.sh # Stop MongoDB
+<br>
 │ 
 ├── server.js # Main Server (port 5000)
+<br>
 ├── package.json # Dependencies
+<br>
 ├── .env # Environment Variables
+<br>
 │
 ├── frontend/ # Web Interface
+<br>
 │ ├── index.html # Main page
+<br>
 │ ├── style.css # Styling
+<br>
 │ └── script.js # Frontend logic
+<br>
 │
 ├── data/ # Data directory
+<br>
 │ └── db/ # MongoDB data (auto-created)
+<br>
 │
 ├── README.md # This file
+<br>
 └── .gitignore # Git ignore file
+<br>
 
 ---
 
