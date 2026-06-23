@@ -84,8 +84,10 @@ Git Bash - Terminal for Window
 ## 📁 Project Structure:-
 
 AI-Timetable-Generator/
+<br>
 │
 ├── backend/ # Node.js Backend
+<br>
 │ ├── models/ # MongoDB Models
 <br>
 │ │ ├── Faculty.js # Faculty schema
