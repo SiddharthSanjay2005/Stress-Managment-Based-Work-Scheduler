@@ -2,11 +2,6 @@
 
 > An intelligent timetable generation system using Genetic Algorithm optimized for educational institutions.
 
-[![Node.js](https://img.shields.io/badge/Node.js-16.x-green.svg)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.x-brightgreen.svg)](https://www.mongodb.com/)
-[![Genetic Algorithm](https://img.shields.io/badge/AI-Genetic%20Algorithm-blue.svg)](https://en.wikipedia.org/wiki/Genetic_algorithm)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 ---
 
 ## 📋 Table of Contents:-
